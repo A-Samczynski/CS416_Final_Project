@@ -24,29 +24,49 @@ def on_start():
     
     #print instructions for use
     cyberpi.led.on('g', id = "all")
-    cyberpi.console.println("Press center of joystick to select an emotion!")
-    time.sleep(4)
-    cyberpi.console.println("Press A or Home to stop.")
+    cyberpi.console.println("\nPress A or Home to stop.\n")
     cyberpi.console.println("Use joystick to navigate up and down")
+    time.sleep(4)
+    cyberpi.console.println("\n\nPress center of joystick to select an emotion!")
     time.sleep(5)
     cyberpi.console.clear()
     cyberpi.console.println("happy")
     
-while not cyberpi.controller.is_press('b'):
-    pass
 
-emotions = ["happy", "sad"]
+
+emotions = ["happy", "sad", "angry", "sleepy"]
 index = Index()
 
 def emotion_action(emotion):
+    cyberpi.console.clear()
+    cyberpi.audio.set_vol(90)
     if emotion == 'happy':
-        cyberpi.led.on('yellow', id = "all")
-        cyberpi.audio.play('SPEAKER.happy')
+        cyberpi.led.play(name = "rainbow")
+        cyberpi.audio.play("laugh")
         cyberpi.console.println("I laugh. Therefore, I am happy.")
+        time.sleep(3)
+        cyberpi.led.on('g', id = "all")
     elif emotion == 'sad':
         cyberpi.led.on('blue', id = "all")
-        cyberpi.audio.play('SPEAKER.sad')
+        cyberpi.audio.play("sad")
         cyberpi.console.println("I am so very sad.")
+        time.sleep(3)
+        cyberpi.led.on('g', id = "all")
+    elif emotion == 'angry':
+        cyberpi.led.play(name = "flash_red")
+        cyberpi.audio.play("angry")
+        cyberpi.console.println("I am extremely angry!!")
+        cyberpi.led.on('r', id = "all")
+        time.sleep(3)
+        cyberpi.led.on('g', id = "all")
+    elif emotion == 'sleepy':
+        cyberpi.led.on(112,56,189)
+        cyberpi.audio.play("sleepy")
+        cyberpi.console.println("Yawn! I am sleepy.")
+        time.sleep(3)
+        cyberpi.led.on('g', id = "all")
+    cyberpi.console.clear()
+    cyberpi.console.println("Use joystick to navigate up and down")
 
 def index_up():
     if index.get_index() == 0:
@@ -61,11 +81,6 @@ def index_down():
     else:
         index.set_index(index.get_index() + 1)
     
-
-
-
-
-
 
 #how to exit the program
 @event.is_press('a')
@@ -91,7 +106,6 @@ def is_down_btn_press():
 def is_mid_btn_press():
     cyberpi.console.clear()
     cyberpi.console.println(emotions[index.get_index()] + " was selected.")
-    cyberpi.console.clear()
     emotion_action(emotions[index.get_index()])
     
     
