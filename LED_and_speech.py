@@ -12,56 +12,68 @@ import cyberpi
 class Index:
     index = 0
     def get_index(self):
-        return index.index
+        return self.index
     def set_index(self,num):
-        index.index = num
+        self.index = num
 
 class Happy:
     selected = 0
     index = 0
+    name = "happy"
     def get_selected(self):
-        return Happy.selected
+        return self.selected
     def set_selected(self,num):
-        Happy.selected = num
+        self.selected = num
     def get_index(self):
-        return Happy.index
+        return self.index
+    def get_name(self):
+        return self.name
 
 class Sad:
     selected = 0
     index = 1
+    name = "sad"
     def get_selected(self):
-        return Sad.selected
+        return self.selected
     def set_selected(self,num):
-        Sad.selected = num
+        self.selected = num
     def get_index(self):
-        return Sad.index
+        return self.index
+    def get_name(self):
+        return self.name
 
 class Angry:
     selected = 0
     index = 2
+    name = "angry"
     def get_selected(self):
-        return Angry.selected
+        return self.selected
     def set_selected(self,num):
-        Angry.selected = num
+        self.selected = num
     def get_index(self):
-        return Angry.index
+        return self.index
+    def get_name(self):
+        return self.name
 
 class Sleepy:
     selected = 0
     index = 3
+    name = "sleepy"
     def get_selected(self):
-        return Sleepy.selected
+        return self.selected
     def set_selected(self,num):
-        Sleepy.selected = num
+        self.selected = num
     def get_index(self):
-        return Sleepy.index
+        return self.index
+    def get_name(self):
+        return self.name
 
 class Total_Emotions_Selected:
     total = 0
     def get_total(self):
-        return Total_Emotions_Selected.total
+        return self.total
     def set_total(self,num):
-        Total_Emotions_Selected.total = num
+        self.total = num
 
 @event.start
 def on_start():
@@ -136,23 +148,32 @@ def index_down():
 def increment_total():
     tes.set_total(tes.get_total() + 1)
 
-def increment_emotion(self, index):
-    emotion_class = find_emotion_class(index)
-    emotion_class.set_total(emotion_class.get_total() + 1)
+def increment_emotion():
+    emotion_class = find_emotion_class()
+    emotion_class.set_selected(emotion_class.get_selected() + 1)
+    
 
-def find_emotion_class(self, index):
+def find_emotion_class():
     emotion_class = happy
-    if index == sad.get_index():
+    if index.get_index() == happy.get_index():
+        pass
+    elif index.get_index() == sad.get_index():
         emotion_class = sad
-    elif index == angry.get_index():
+    elif index.get_index() == angry.get_index():
         emotion_class = angry
-    elif index == sleepy.get_index():
+    elif index.get_index() == sleepy.get_index():
         emotion_class = sleepy
     return emotion_class
 
-def percent_selected(self, index):
-    emotion_class = find_emotion_class(index)
-    return((emotion_class.get_selected() / tes.get_total) * 100)
+def percent_selected():
+    emotion_class = find_emotion_class()
+    percentage = -1
+    if emotion_class.get_selected() > 0:
+        ratio = (emotion_class.get_selected() / tes.get_total())
+        percentage = ratio * 100
+    else:
+        percentage = 0
+    return(percentage)
 
 #how to exit the program
 @event.is_press('a')
@@ -178,10 +199,13 @@ def is_down_btn_press():
 def is_mid_btn_press():
     cyberpi.console.clear()
     cyberpi.console.println("\n" + emotions[index.get_index()] + " was selected.\n")
-    increment_emotion(index.get_index())
+    increment_emotion()
     increment_total()
-    cyberpi.console.println("It has been selected " + percent_selected(index.get_index()) + " percent of this run.\n")
-    time.sleep(2)
+    cyberpi.console.println(str(emotions[index.get_index()]) + 
+                            str(' has been selected\n') +
+                            str(percent_selected()) +
+                            str(' percent of this run.\n'))
+    time.sleep(3)
     emotion_action(emotions[index.get_index()])
     
     
